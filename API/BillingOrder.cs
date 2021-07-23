@@ -2,8 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using API_july2021.Model;
 
-namespace API_july2021.BillingOrderAPI
+namespace API_july2021.API
 {
     class BillingOrder
     {
