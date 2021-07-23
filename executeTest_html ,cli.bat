@@ -1,0 +1,1 @@
+newman run "API Testing 1CSVDATA.postman_collection" -e "API TEST Billing Order Environment.postman_environment.json" -d data.csv -r html,cli

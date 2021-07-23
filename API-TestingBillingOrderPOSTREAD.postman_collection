@@ -1,0 +1,102 @@
+{
+	"info": {
+		"_postman_id": "1b0f4585-f717-4647-bc37-e89781ad2b26",
+		"name": "API-TestingBillingOrder",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create New Billing Order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);\r",
+							"});\r",
+							"pm.environment.set(\"ID\", jsonData.data.id);\r",
+							"console.log(jsonData.data.id);\r",
+							"pm.environment.set(\"Firstname\", jsonData.data.FirstName);\r",
+							"pm.environment.set(\"Lastname\", jsonData.data.LastName);\r",
+							"pm.environment.set(\"Email\", jsonData.data.Email);\r",
+							"pm.environment.set(\"Addressline1\", jsonData.data.AddressLine1);\r",
+							"pm.environment.set(\"Addressline2\", jsonData.data.AddressLine2);\r",
+							"pm.environment.set(\"Phone\", jsonData.data.PhoneNumber);\r",
+							"pm.environment.set(\"Zipcode\", jsonData.data.ZipCode);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 0,\r\n  \"FirstName\": \"AnuA\",\r\n  \"LastName\": \"Gupta\",\r\n  \"Email\": \"Anug@ghm.com\",\r\n  \"AddressLine1\": \"abcd\",\r\n  \"AddressLine2\": \"dfg St\",\r\n  \"PhoneNumber\": \"1234567899\",\r\n  \"Comment\": \"Test API\",\r\n  \"ZipCode\": \"4566778\"\r\n}"
+				},
+				"url": {
+					"raw": "{{baseURL}}",
+					"host": [
+						"{{baseURL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Billing Order By Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response time is less than 800ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{baseURL}}/{{ID}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"{{ID}}"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1144",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

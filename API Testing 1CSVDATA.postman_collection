@@ -1,0 +1,94 @@
+{
+	"info": {
+		"_postman_id": "7f1e54d3-3844-45b9-9e78-b4783818f067",
+		"name": "API Testing 1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Validation",
+			"item": [
+				{
+					"name": "Post Billing Orders CSV",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\r\n  \"FirstName\": \"{{firstname}}\",\r\n  \"LastName\": \"{{lastname}}\",\r\n  \"Email\": \"{{email}}\",\r\n  \"AddressLine1\": \"{{addressLine1}}\",\r\n  \"AddressLine2\": \"{{addressLine2}}\",\r\n  \"PhoneNumber\": \"{{phone}}\",\r\n  \"Comment\": \"{{test validation}}\",\r\n  \"ZipCode\": \"{{zipCode}}\"\r\n}"
+						},
+						"url": {
+							"raw": "{{baseURL}}",
+							"host": [
+								"{{baseURL}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Billing Order By Id Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseURL}}/{{ID}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"{{ID}}"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1144",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
