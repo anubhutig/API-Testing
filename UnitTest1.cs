@@ -7,6 +7,8 @@ using RestSharp;
 using System;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
+using System.Collections;
+
 
 namespace API_july2021
 {
@@ -20,47 +22,39 @@ namespace API_july2021
            billingOrder = new BillingOrder();
         }
 
-        [Test]
-        public void CreateOrderTestCase()
+        [TestCaseSource(nameof(BillingOrderTestCaseData))]
+        public void CreateOrderTestCase(BillingOrderN expectedorder)
         {
             // Data Object
+                       
+           string jsonBody = JsonConvert.SerializeObject(expectedorder);              
+           IRestResponse response = billingOrder.PostOrder(jsonBody);          
+           BillingOrderBase actualorder = JsonConvert.DeserializeObject<BillingOrderBase>(response.Content);
+           expectedorder.Should().BeEquivalentTo(actualorder.Data, options => options.Excluding(o => o.Id));
 
-            var expectedorder = new BillingOrderN
+           }
+
+        public static IEnumerable BillingOrderTestCaseData
+        {
+            get
             {
-                FirstName = "Anu",
-                LastName = "Gupta",
-                Email = "AnuG@gmail.com",
-                AddressLine1 = "albert ave",
-                AddressLine2 = "qld",
-                PhoneNumber = "7798120487",
-                Comment = "Test123",
-                ZipCode = "445577"
-            };
-            string jsonBody = JsonConvert.SerializeObject(expectedorder);
-                        
-            IRestResponse response = billingOrder.PostOrder(jsonBody);
+                yield return new TestCaseData(new BillingOrderN
+                {
+                    FirstName = "Anu",
+                    LastName = "Gupta",
+                    Email = "AnuG@gmail.com",
+                    AddressLine1 = "albert ave",
+                    AddressLine2 = "qld",
+                    PhoneNumber = "7798120487",
+                    Comment = "Test123",
+                    ZipCode = "445577"
+                }).SetName("Create Billing Order Test Case");
 
-            // Log
-            Console.WriteLine(response.Content);
+                yield return new TestCaseData(new BillingOrderN()).SetName("Default Test Data");
+                yield return new TestCaseData(new BillingOrderN(email:"123")).SetName("Email validation with default data");
 
-            // Assertions
-            BillingOrderBase actualorder = JsonConvert.DeserializeObject<BillingOrderBase>(response.Content);
-                        
-            // CleanUp
-            Id = actualorder.Data.Id + "";
-                     
-             //Hack
-            // expectedorder.Id = actualorder.Data.Id;
-
-            expectedorder.Should().BeEquivalentTo(actualorder.Data, options => options.Excluding(o => o.Id));
-
-            // Assertions
-            Assert.AreEqual(expectedorder.FirstName, actualorder.Data.FirstName);
-            Assert.AreEqual(response.StatusCode, "Ok");
-            Assert.True(response.IsSuccessful);
-
+            }
         }
-
 
         [Test]
         public void TC_GetOrder()

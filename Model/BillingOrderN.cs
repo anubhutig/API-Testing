@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -34,5 +35,18 @@ namespace API_july2021.Model
 
         [JsonProperty("id")]
         public int Id { get; set; }
+
+        public BillingOrderN(string firstName=null, string lastName=null, string email=null, string addressLine1=null, string addressLine2=null, string phoneNumber=null, string comment=null, string zipCode=null)
+        {
+            FirstName = firstName ?? TestContext.CurrentContext.Random.GetString(10, "abcdefghijklmnopqrstuvwxyz");
+            LastName = lastName ?? TestContext.CurrentContext.Random.GetString(); 
+            Email = email ?? TestContext.CurrentContext.Random.GetString() + "@yahoo.com";
+            AddressLine1 = addressLine1 ?? TestContext.CurrentContext.Random.GetString();
+            AddressLine2 = addressLine2 ?? TestContext.CurrentContext.Random.GetString();
+            PhoneNumber = phoneNumber ?? TestContext.CurrentContext.Random.GetString(); 
+            Comment = comment ?? TestContext.CurrentContext.Random.GetString(); 
+            ZipCode = zipCode ?? TestContext.CurrentContext.Random.GetString();
+            //Id = id;
+        }
     }
 }
