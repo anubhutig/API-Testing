@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Faker.Net" Version="1.5.138" />
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
+    <PackageReference Include="LumenWorksCsvReader" Version="4.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="NUnit" Version="3.13.2" />
@@ -28,6 +29,12 @@
 
   <ItemGroup>
     <Folder Include="tests\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="TestData\BillingOrderData.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

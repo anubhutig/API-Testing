@@ -8,31 +8,32 @@ using System;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
 using System.Collections;
-
+using LumenWorks.Framework.IO.Csv;
+using System.IO;
 
 namespace API_july2021
 {
     public class Tests
     {
         BillingOrder billingOrder;
-       [SetUp]
+        [SetUp]
 
         public void Setup()
         {
-           billingOrder = new BillingOrder();
+            billingOrder = new BillingOrder();
         }
 
         [TestCaseSource(nameof(BillingOrderTestCaseData))]
         public void CreateOrderTestCase(BillingOrderN expectedorder)
         {
             // Data Object
-                       
-           string jsonBody = JsonConvert.SerializeObject(expectedorder);              
-           IRestResponse response = billingOrder.PostOrder(jsonBody);          
-           BillingOrderBase actualorder = JsonConvert.DeserializeObject<BillingOrderBase>(response.Content);
-           expectedorder.Should().BeEquivalentTo(actualorder.Data, options => options.Excluding(o => o.Id));
 
-           }
+            string jsonBody = JsonConvert.SerializeObject(expectedorder);
+            IRestResponse response = billingOrder.PostOrder(jsonBody);
+            BillingOrderBase actualorder = JsonConvert.DeserializeObject<BillingOrderBase>(response.Content);
+            expectedorder.Should().BeEquivalentTo(actualorder.Data, options => options.Excluding(o => o.Id));
+
+        }
 
         public static IEnumerable BillingOrderTestCaseData
         {
@@ -51,7 +52,7 @@ namespace API_july2021
                 }).SetName("Create Billing Order Test Case");
 
                 yield return new TestCaseData(new BillingOrderN()).SetName("Default Test Data");
-                yield return new TestCaseData(new BillingOrderN(email:"123")).SetName("Email validation with default data");
+                yield return new TestCaseData(new BillingOrderN(email: "123")).SetName("Email validation with default data");
 
             }
         }
@@ -103,7 +104,7 @@ namespace API_july2021
 
             expectedorder.Should().BeEquivalentTo(actualorder.Data, options => options.Excluding(o => o.Id));
 
-            
+
 
         }
 
@@ -140,11 +141,11 @@ namespace API_july2021
         [Test]
         public void TC_UI_Test()
         {
-            
+
             BillingSubmissionFormTest orderpage = new BillingSubmissionFormTest(driver);
 
             orderpage.BillingSubmissionForm(expectedorder);
-            
+
 
         }
 
@@ -174,15 +175,53 @@ namespace API_july2021
         [Test]
         public void TC_PutOrder()
         {
-           
-                string body = $"{{\"id\":0,\"FirstName\":\"Anubhuti\",\"LastName\":\"Gupta\",\"Email\":\"Anug@ghm.com\",\"AddressLine1\":\"abcd\",\"AddressLine2\":\"dfg St\",\"PhoneNumber\":\"1234567899\",\"Comment\":\"Test API\",\"ZipCode\":\"4566778\"}}";
-                BillingOrder billingorder = new BillingOrder();
-                IRestResponse response = billingorder.PutOrder("1381", body);
 
-                // Log
-                Console.WriteLine(response.Content);
-           
+            string body = $"{{\"id\":0,\"FirstName\":\"Anubhuti\",\"LastName\":\"Gupta\",\"Email\":\"Anug@ghm.com\",\"AddressLine1\":\"abcd\",\"AddressLine2\":\"dfg St\",\"PhoneNumber\":\"1234567899\",\"Comment\":\"Test API\",\"ZipCode\":\"4566778\"}}";
+            BillingOrder billingorder = new BillingOrder();
+            IRestResponse response = billingorder.PutOrder("1381", body);
 
+            // Log
+            Console.WriteLine(response.Content);
+
+
+        }
+
+        [TestCaseSource(nameof(BillingOrderCSVTestCaseData))]
+        public void CreateOrderCSVTestCase(BillingOrderN expectedorder)
+        {
+            // Data Object
+
+            string jsonBody = JsonConvert.SerializeObject(expectedorder);
+            IRestResponse response = billingOrder.PostOrder(jsonBody);
+            BillingOrderBase actualorder = JsonConvert.DeserializeObject<BillingOrderBase>(response.Content);
+            expectedorder.Should().BeEquivalentTo(actualorder.Data, options => options.Excluding(o => o.Id));
+
+        }
+
+
+        public static IEnumerable BillingOrderCSVTestCaseData()
+        {
+            string path = AppDomain.CurrentDomain.BaseDirectory + @"TestData\BillingOrderData.csv";
+            using (var csv = new CsvReader(new StreamReader(Path.Combine(path)), true))
+            {
+                while (csv.ReadNextRecord())
+            {
+                    // Test Data
+                string description = csv["description"];
+                 BillingOrderN order = new BillingOrderN(
+                     firstName: csv["firstname"],
+                     lastName: csv["lastname"],
+                     email: csv["email"],
+                     addressLine1: csv["addressline1"],
+                     addressLine2: csv["addressline2"],
+                     phoneNumber: csv["phone"],
+                     comment: csv["comment"],                                         
+                     zipCode: csv["zipcode"]
+                     );
+                 yield return new TestCaseData(order).SetName(description);
+              }
+                
+            }
         }
 
     }
