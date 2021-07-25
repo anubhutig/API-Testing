@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using API_july2021.Utility;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -38,14 +39,14 @@ namespace API_july2021.Model
 
         public BillingOrderN(string firstName=null, string lastName=null, string email=null, string addressLine1=null, string addressLine2=null, string phoneNumber=null, string comment=null, string zipCode=null)
         {
-            FirstName = firstName ?? TestContext.CurrentContext.Random.GetString(10, "abcdefghijklmnopqrstuvwxyz");
-            LastName = lastName ?? TestContext.CurrentContext.Random.GetString(); 
-            Email = email ?? TestContext.CurrentContext.Random.GetString() + "@yahoo.com";
-            AddressLine1 = addressLine1 ?? TestContext.CurrentContext.Random.GetString();
-            AddressLine2 = addressLine2 ?? TestContext.CurrentContext.Random.GetString();
-            PhoneNumber = phoneNumber ?? TestContext.CurrentContext.Random.GetString(); 
-            Comment = comment ?? TestContext.CurrentContext.Random.GetString(); 
-            ZipCode = zipCode ?? TestContext.CurrentContext.Random.GetString();
+            FirstName = firstName ?? DataGenerator.FullName;
+            LastName = lastName ?? DataGenerator.GetRandomString(10);
+            Email = email ?? DataGenerator.GetRandomString();
+            AddressLine1 = addressLine1 ?? DataGenerator.GetRandomString(15);
+            AddressLine2 = addressLine2 ?? DataGenerator.GetRandomString();
+            PhoneNumber = phoneNumber ?? DataGenerator.GetRandomString();
+            Comment = comment ?? DataGenerator.GetRandomString();
+            ZipCode = zipCode ?? DataGenerator.GetRandomString();
             //Id = id;
         }
     }
