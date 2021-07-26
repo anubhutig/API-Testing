@@ -1,0 +1,15 @@
+﻿    {
+    "success": true,
+    "data": {
+        "FirstName": "Anu",
+        "LastName": "Gupta",
+        "Email": "AnuG@gmail.com",
+        "AddressLine1": "albert ave",
+        "AddressLine2": "qld",
+        "PhoneNumber": "7798120487",
+        "Comment": "Test123",
+        "ZipCode": "445577",
+        "id": 1980
+    },
+    "message": "Billing Order saved successfully"
+}

@@ -10,9 +10,11 @@ using OpenQA.Selenium;
 using System.Collections;
 using LumenWorks.Framework.IO.Csv;
 using System.IO;
+using ApprovalTests.Reporters;
 
 namespace API_july2021
 {
+    [UseReporter(typeof(VisualStudioReporter))]
     public class Tests
     {
         BillingOrder billingOrder;
@@ -222,6 +224,39 @@ namespace API_july2021
               }
                 
             }
+        }
+
+        [Test]
+        public void CreateOrderTestSnapShot()
+        {
+            
+
+            BillingOrderN expectedorder = new BillingOrderN
+            {
+                FirstName = "Anu",
+                LastName = "Gupta",
+                Email = "AnuG@gmail.com",
+                AddressLine1 = "albert ave",
+                AddressLine2 = "qld",
+                PhoneNumber = "7798120487",
+                Comment = "Test123",
+                ZipCode = "445577"
+            };
+            string jsonBody = JsonConvert.SerializeObject(expectedorder);
+
+
+            BillingOrder billingorder = new BillingOrder();
+            IRestResponse response = billingorder.PostOrder(jsonBody);
+
+            // Log
+            Console.WriteLine(response.Content);
+
+           BillingOrderBase actualorder = JsonConvert.DeserializeObject<BillingOrderBase>(response.Content);
+         
+            ApprovalTests.Approvals.VerifyJson(response.Content);
+
+
+
         }
 
     }

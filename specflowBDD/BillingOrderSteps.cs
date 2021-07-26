@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+﻿using OpenQA.Selenium;
 using System;
 using TechTalk.SpecFlow;
 
@@ -7,32 +7,39 @@ namespace API_july2021.specflowBDD
     [Binding]
     public class BillingOrderSteps
     {
-        int num1;
-        int num2;
-        int sum;
+        IWebDriver browser;
+        private readonly ScenarioContext scenarioContext;
 
-        [Given(@"the first number is (.*)")]
-        public void GivenTheFirstNumberIs(int num1)
+
+        public BillingOrderSteps(ScenarioContext scenarioContext)
         {
-            this.num1 = num1;
+            this.scenarioContext = scenarioContext;
+
+        }
+
+        [Given(@"Open Billing Order Page")]
+        public void GivenOpenBillingOrderPage()
+        {
+            browser = (IWebDriver)scenarioContext["ChromeDriver"];
+            browser.Url = "http://www.google.com";
         }
         
-        [Given(@"the second number is (.*)")]
-        public void GivenTheSecondNumberIs(int num2)
+        [When(@"Enter User Details")]
+        public void WhenEnterUserDetails()
         {
-           this.num2 = num2;
+            
         }
         
-        [When(@"the two numbers are added")]
-        public void WhenTheTwoNumbersAreAdded()
+        [When(@"Submit User Details")]
+        public void WhenSubmitUserDetails()
         {
-            sum = num1 + num2;
+            
         }
         
-        [Then(@"the result should be (.*)")]
-        public void ThenTheResultShouldBe(int expected)
+        [Then(@"Form should be submitted successfully")]
+        public void ThenFormShouldBeSubmittedSuccessfully()
         {
-            Assert.AreEqual(expected, sum);
+            
         }
     }
 }
